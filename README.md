@@ -80,3 +80,10 @@ Verify the caching speed and multi-scale unit-economic calculations directly on 
    ```bash
    python3 test_hybrid_benchmark.py
    ```
+
+---
+
+## 4. Licensing
+
+* **Open-Source Edition**: Licensed under the **GNU Affero General Public License v3.0 (AGPLv3)**. See `LICENSE` for details.
+* **Commercial Enterprise License**: To bypass AGPLv3 copyleft restrictions and integrate C-Life into closed-source commercial backends, contact `devkancheti4-design` for enterprise licensing terms.
