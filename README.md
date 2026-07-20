@@ -45,21 +45,30 @@ void heartbeat() {
 
 ---
 
-## 2. Infrastructure Comparison (At 1M Daily Queries, 40% Hit Rate)
+## 2. Infrastructure Comparison (Cloned Mem0 Baseline vs. Mem0 + C-Life Hybrid)
 
+### A. 500K Queries / Day Scale
 | Operational Metric | Standalone Mem0 Baseline | Mem0 + C-Life Hybrid Stack | **What You Save / Gain** |
 | :--- | :--- | :--- | :--- |
-| **Average Query Latency** | $1,375\text{ ms}$ | **`825 ms`** | **`40% Latency Reduction`** (550 ms saved per query). |
-| **Cache Hit Latency** | $1,375\text{ ms}$ (full pipeline) | **`224 nanoseconds`** | **`6.8 Million x speedup`** for repeating hits. |
-| **LLM Token Billing (Annual)** | $\$1,679,000 / \text{year}$ | **`$1,007,400 / year`** | **`$671,600 saved / year`** (40% token savings). |
-| **Cache RAM (10M facts)** | $15.3\text{ GB}$ (Vector store) | **`240 MB`** (C-Life) | **`98.4% RAM reduction`** ($15\text{ GB}$ saved). |
-| **re-ID / Recall Accuracy** | $88\%$ F1 (Semantic) | **`88% F1 (Semantic)`** | **`Zero Accuracy Loss`** (misses route to default DB). |
+| **Annual API Billing** | $\$839,500 / \text{year}$ | **`$503,700 / year`** | **`$335,800 saved / year`** ($40\%$ cost reduction) |
+| **Annual Token Volume** | $1.317\text{ Trillion}$ | **`0.790 Trillion`** | **`526.6 Billion tokens saved`** |
+| **Average Query Latency** | $1,375\text{ ms}$ | **`825 ms`** | **`550 ms saved`** ($40\%$ faster) |
+
+### B. 2.0M Queries / Day Scale
+| Operational Metric | Standalone Mem0 Baseline | Mem0 + C-Life Hybrid Stack | **What You Save / Gain** |
+| :--- | :--- | :--- | :--- |
+| **Annual API Billing** | $\$3,358,000 / \text{year}$ | **`$2,014,800 / year`** | **`$1,343,200 saved / year`** (Over $1.34\text{M}$ saved!) |
+| **Annual Token Volume** | $5.267\text{ Trillion}$ | **`3.160 Trillion`** | **`2.107 Trillion tokens saved`** |
+| **Average Query Latency** | $1,375\text{ ms}$ | **`825 ms`** | **`550 ms saved`** ($40\%$ faster) |
+| **Cache Hit Latency (p50)** | $1,375\text{ ms}$ (full pipeline) | **`417 nanoseconds`** | **`3.2 Million x speedup`** |
+| **Cache RAM (10M facts)** | $15.3\text{ GB}$ (Vector store) | **`240 MB`** (C-Life) | **`98.4% RAM reduction`** ($15\text{ GB}$ saved) |
+| **re-ID / Recall Accuracy** | $88\%$ F1 (Semantic) | **`88% F1 (Semantic)`** | **`Zero Accuracy Loss`** (pass-through) |
 
 ---
 
-## 3. How to Run the Benchmark Locally (Cross-Platform)
+## 3. How to Run the Benchmark Locally
 
-Verify the caching speed and hybrid unit-economic calculations directly on your machine:
+Verify the caching speed and multi-scale unit-economic calculations directly on your machine:
 
 1. Clone this repository:
    ```bash
@@ -67,8 +76,7 @@ Verify the caching speed and hybrid unit-economic calculations directly on your 
    cd c-cache
    ```
 
-2. Run the benchmark (Works on macOS, Linux, and Windows):
+2. Run the multi-scale benchmark script:
    ```bash
    python3 test_hybrid_benchmark.py
    ```
-   *Note: The script will automatically detect your OS (macOS/Linux/Windows), compile `life_organism_core.c` into a shared library using clang/gcc/cc, and run 100,000 in-memory lookup trials to measure latency.*
