@@ -1,3 +1,5 @@
 liblife.so
+liblife.dylib
+liblife.dll
 __pycache__/
 *.pyc
