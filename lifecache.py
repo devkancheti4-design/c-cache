@@ -1,20 +1,36 @@
 import ctypes
 import os
+import sys
 import subprocess
 
 class LifeCache:
     def __init__(self):
-        # Locate and compile C file
         dir_path = os.path.dirname(os.path.realpath(__file__))
         c_path = os.path.join(dir_path, "life_organism_core.c")
-        so_path = os.path.join(dir_path, "liblife.so")
         
-        # Compile C shared library on the fly (cross-platform compatible)
+        # Cross-platform shared library extension handling
+        if sys.platform.startswith("win"):
+            lib_ext = ".dll"
+        elif sys.platform.startswith("darwin"):
+            lib_ext = ".dylib"
+        else:
+            lib_ext = ".so"
+            
+        so_path = os.path.join(dir_path, f"liblife{lib_ext}")
+        
+        # Compile C shared library on the fly if not present
         if not os.path.exists(so_path):
-            try:
-                subprocess.run(["clang", "-shared", "-o", so_path, "-fPIC", c_path], check=True)
-            except Exception:
-                subprocess.run(["gcc", "-shared", "-o", so_path, "-fPIC", c_path], check=True)
+            compiled = False
+            compilers = ["clang", "gcc", "cc"]
+            for comp in compilers:
+                try:
+                    subprocess.run([comp, "-shared", "-o", so_path, "-fPIC", c_path], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    compiled = True
+                    break
+                except Exception:
+                    continue
+            if not compiled:
+                raise RuntimeError("No compatible C compiler (clang, gcc, cc) found. Please install a C compiler.")
             
         self.lib = ctypes.CDLL(so_path)
         

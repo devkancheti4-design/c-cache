@@ -57,7 +57,7 @@ void heartbeat() {
 
 ---
 
-## 3. How to Run the Benchmark Locally
+## 3. How to Run the Benchmark Locally (Cross-Platform)
 
 Verify the caching speed and hybrid unit-economic calculations directly on your machine:
 
@@ -67,8 +67,8 @@ Verify the caching speed and hybrid unit-economic calculations directly on your 
    cd c-cache
    ```
 
-2. Run the benchmark:
+2. Run the benchmark (Works on macOS, Linux, and Windows):
    ```bash
-   python test_hybrid_benchmark.py
+   python3 test_hybrid_benchmark.py
    ```
-   *Note: The script will automatically compile `life_organism_core.c` into a shared library (`liblife.so`) using clang/gcc and run 100,000 in-memory lookup trials to measure latency.*
+   *Note: The script will automatically detect your OS (macOS/Linux/Windows), compile `life_organism_core.c` into a shared library using clang/gcc/cc, and run 100,000 in-memory lookup trials to measure latency.*
